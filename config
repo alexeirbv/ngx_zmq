@@ -74,11 +74,22 @@ CORE_MODULES="$CORE_MODULES ngx_http_zmq_module"
 CORE_INCS="$CORE_INCS $ngx_feature_path $ngx_addon_dir/src"
 CORE_LIBS="$CORE_LIBS $ngx_feature_libs"
 
-HTTP_MODULES="$HTTP_MODULES ngx_http_zmq_module"
 
-NGX_ADDON_DEPS="$NGX_ADDON_DEPS"
-NGX_ADDON_SRCS="$NGX_ADDON_SRCS \
-                $ngx_addon_dir/src/ngx_http_zmq_module.c\
-                $ngx_addon_dir/src/conn_pool.c"
+if test -n "$ngx_module_link"; then
+    ngx_module_type=HTTP
+    ngx_module_name=$ngx_addon_name
+    ngx_module_srcs="$ngx_addon_dir/src/ngx_http_zmq_module.c $ngx_addon_dir/src/conn_pool.c"
+    ngx_module_libs="-lzmq"
 
-have=NGX_ZEROMQ_MODULE . auto/have
+    . auto/module
+ else
+    HTTP_MODULES="$HTTP_MODULES ngx_http_zmq_module"
+
+    NGX_ADDON_DEPS="$NGX_ADDON_DEPS"
+    NGX_ADDON_SRCS="$NGX_ADDON_SRCS \
+                    $ngx_addon_dir/src/ngx_http_zmq_module.c\
+                    $ngx_addon_dir/src/conn_pool.c"
+
+    have=NGX_ZEROMQ_MODULE . auto/have
+ fi
+
