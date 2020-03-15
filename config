@@ -68,7 +68,7 @@ if [ $ngx_found = no ]; then
    exit 1
 fi
 
-ngx_addon_name="ngx_zmq_module"
+ngx_addon_name="ngx_http_zmq_module"
 
 CORE_MODULES="$CORE_MODULES ngx_http_zmq_module"
 CORE_INCS="$CORE_INCS $ngx_feature_path $ngx_addon_dir/src"
